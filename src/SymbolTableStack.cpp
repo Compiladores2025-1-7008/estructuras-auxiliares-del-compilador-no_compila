@@ -9,7 +9,7 @@ void SymbolTableStack::popScope() {
     if (stack.empty())
         throw std::runtime_error("popScope: pila vacía");
 
-    // No liberar – el requerimiento indica NO liberar
+    // No liberar 
     stack.pop_back();
 }
 

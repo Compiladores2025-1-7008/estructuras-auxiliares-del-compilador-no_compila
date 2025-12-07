@@ -1,52 +1,56 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <unordered_map>
-#include <optional>
+#include <iostream>
+#include "SymbolTable.hpp"
 
-class SymbolTable; // forward
+enum class TypeKind { BASIC, ARRAY, STRUCT };
 
-enum class TypeKind
-{
-    BASIC,
-    ARRAY,
-    STRUCT
-};
-
-struct TypeEntry
-{
+struct TypeEntry {
     int id;
     TypeKind kind;
     std::string name;
-    int size;
-    int elements = 1;
+    int size;    
+    // 'elements' y 'numElements' comparten la misma memoria
+    union {
+        int elements;
+        int numElements;
+    };
+
     int baseTypeId = -1;
     SymbolTable *structFields = nullptr;
+
+    // Constructor para inicializar por defecto 
+    TypeEntry() 
+        : id(0), kind(TypeKind::BASIC), name(""), size(0), 
+          elements(1), baseTypeId(-1), structFields(nullptr) {}
 };
 
-class TypeTable
-{
-public:
-    TypeTable();
-
+class TypeTable {
 private:
     std::vector<TypeEntry> types;
     int lastId = 0;
 
 public:
-    // --- Creación de tipos ---
+    TypeTable();
+
+    // --- METODOS PARA LOS TESTS ---
+    int insertType(const std::string &name, int size);
+    int insertArrayType(const std::string &name, int baseTypeId, int elements);
+    
+    const TypeEntry &getType(int id) const;
+
+    // --- METODOS---
     int addBasicType(const std::string &name, int size);
     int addArrayType(int baseTypeId, int elements);
     int addStructType(const std::string &name, SymbolTable *fields);
 
-    // --- Consultas ---
+    // --- CONSULTAS ---
     const TypeEntry &get(int id) const;
-
     int getSize(int id) const;
     int getNumElements(int id) const;
     int getBaseType(int id) const;
     SymbolTable *getStructFields(int id) const;
 
-    // Depuración
     void print() const;
 };
