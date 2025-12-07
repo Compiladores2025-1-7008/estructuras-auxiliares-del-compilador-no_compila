@@ -3,13 +3,14 @@
 
 class CodeGenerator {
 private:
-    int nextTemp = 0;
-    int nextLabel = 0;
+    int nextTemp = 0; // Contador para temporales
+    int nextLabel = 0; // Contador para etiquetas
 
 public:
-    std::string newTemp();
-
+    // Genera un nuevo nombre para una variable temporal.
+    std::string newTemp(); 
+    // Genera una nueva etiqueta para control de flujo.
     std::string newLabel() ;
-
+    // Reinicia los contadores de temporales y etiquetas.
     void reset() ;
 };
