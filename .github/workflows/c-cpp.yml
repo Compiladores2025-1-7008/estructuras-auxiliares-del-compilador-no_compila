@@ -1,0 +1,36 @@
+name: CI - Pruebas Automaticas
+
+# Configuración de disparadores (Triggers)
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    name: Compilación y Pruebas
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Descargar el código del repositorio
+    - name: Checkout del código
+      uses: actions/checkout@v4
+
+    # 2. Instalación de herramientas (Esto le da robustez, asegura que GCC y Make estén al día)
+    - name: Instalar herramientas de compilación
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+
+    # 3. Compilación (Usa tu Makefile para generar el ejecutable)
+    - name: Compilar proyecto
+      run: make
+
+    # 4. Ejecución de pruebas (Lo importante: tu lógica de Nested Learning)
+    - name: Ejecutar pruebas
+      run: make test
+
+    # 5. Limpieza (Igual que el ejemplo que viste, buena práctica)
+    - name: Limpiar archivos generados
+      run: make clean
