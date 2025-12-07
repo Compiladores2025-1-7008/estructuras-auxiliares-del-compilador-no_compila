@@ -1,43 +1,45 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "symbol_table.hpp"
+#include "SymbolTable.hpp"
 
 class SymbolTableStack {
 private:
-    std::vector<std::unique_ptr<SymbolTable*>> stack;
+    // La pila almacena punteros a tablas
+    std::vector<SymbolTable*> stack;
 
 public:
-    // Crea nuevo ámbito
+    // Crear nuevo ámbito (tabla vacía)
     void pushScope();
 
-    // Sale de un ámbito
+    // Quitar el ámbito actual (no se libera)
     void popScope();
 
-    //Sale el ámbito y retorna la referencia a la tabla de símbolos en la cima
-    SymbolTable *popSymbolTable();
+    // Sale el ámbito y retorna la referencia sin liberarla
+    SymbolTable* popSymbolTable();
 
-    // Insertar solo en tope
+    // Insertar solo en el tope
     bool insertTop(const SymbolEntry &entry);
 
     // Insertar solo en la base (ámbito global)
-    bool insertBase(const SymbolEntry &entry) ;
+    bool insertBase(const SymbolEntry &entry);
 
-    // Buscar solo en tope
-    SymbolEntry* lookupTop(const std::string &id);
+    // Buscar solo en la tabla del tope
+    const SymbolEntry* lookupTop(const std::string &id);
 
-    // Buscar solo en la base
-    SymbolEntry* lookupBase(const std::string &id);
+    // Buscar solo en la tabla de la base
+    const SymbolEntry* lookupBase(const std::string &id);
 
-    // Depuración
+    // Obtener ámbito actual
     SymbolTable* currentScope() {
         if (stack.empty()) return nullptr;
-        return stack.back().get();
+        return stack.back();
     }
 
+    // Obtener ámbito global
     SymbolTable* globalScope() {
         if (stack.empty()) return nullptr;
-        return stack.front().get();
+        return stack.front();
     }
 
     size_t levels() const { return stack.size(); }
