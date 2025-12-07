@@ -17,7 +17,7 @@ jobs:
     - name: Checkout del código
       uses: actions/checkout@v4
 
-    # 2. Instalación de herramientas (Esto le da robustez, asegura que GCC y Make estén al día)
+    # 2. Instalación de herramientas 
     - name: Instalar herramientas de compilación
       run: |
         sudo apt-get update
@@ -27,10 +27,10 @@ jobs:
     - name: Compilar proyecto
       run: make
 
-    # 4. Ejecución de pruebas (Lo importante: tu lógica de Nested Learning)
+    # 4. Ejecución de pruebas 
     - name: Ejecutar pruebas
       run: make test
 
-    # 5. Limpieza (Igual que el ejemplo que viste, buena práctica)
+    # 5. Limpieza 
     - name: Limpiar archivos generados
       run: make clean
