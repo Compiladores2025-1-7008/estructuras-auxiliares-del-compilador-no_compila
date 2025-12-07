@@ -6,7 +6,7 @@
 using namespace std;
 
 // =======================================================
-//  Constructor: aquí puedes registrar básicos
+//  Constructor: aquí puedes registran básicos
 // =======================================================
 
 TypeTable::TypeTable()
