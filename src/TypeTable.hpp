@@ -6,12 +6,13 @@
 
 enum class TypeKind { BASIC, ARRAY, STRUCT };
 
+// Estructura para representar un tipo
 struct TypeEntry {
     int id;
     TypeKind kind;
     std::string name;
     int size;    
-    // 'elements' y 'numElements' comparten la misma memoria
+    // 'elements' y 'numElements' comparten la misma memoria para que no exista conflicto con los test
     union {
         int elements;
         int numElements;
