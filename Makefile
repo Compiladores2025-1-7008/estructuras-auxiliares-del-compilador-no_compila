@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++17 -Wall -I./src -I./external/googletest/googletest/include
 LDFLAGS = -pthread
 
 SRC_DIR = src
-TEST_DIR = tests
+TEST_DIR = test
 BUILD_DIR = build
 
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
