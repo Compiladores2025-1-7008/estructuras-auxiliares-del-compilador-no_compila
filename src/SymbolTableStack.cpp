@@ -1,54 +1,73 @@
 #include "SymbolTableStack.hpp"
 #include <stdexcept>
 
-// Crear nuevo ámbito (tabla vacía)
+/**
+ * Crea un nuevo ámbito y lo agrega a la pila.
+ * Se usa cuando el compilador entra a un nuevo bloque o función.
+ */
 void SymbolTableStack::pushScope() {
     stack.push_back(new SymbolTable());
 }
 
-// Quitar el ámbito actual (no se libera)
+/**
+ * Elimina el ámbito superior de la pila.
+ * No libera memoria; solo remueve el scope.
+ * Lanza excepción si la pila está vacía.
+ */
 void SymbolTableStack::popScope() {
     if (stack.empty())
         throw std::runtime_error("popScope: pila vacía");
-
-    // No liberar 
     stack.pop_back();
 }
 
-// Sale el ámbito y retorna la referencia sin liberarla
+/**
+ * Saca el ámbito superior y lo retorna.
+ * Permite que el llamador decida cuándo liberar la memoria.
+ * Lanza excepción si la pila está vacía.
+ */
 SymbolTable* SymbolTableStack::popSymbolTable() {
     if (stack.empty())
         throw std::runtime_error("popSymbolTable: pila vacía");
 
     SymbolTable* top = stack.back();
     stack.pop_back();
-    return top;  // sin liberar
+    return top;
 }
 
-// Inserta un símbolo en el ámbito más interno (el actual)
-// Retorna true si tuvo éxito, false si ya existe 
+/**
+ * Inserta una entrada en el ámbito superior.
+ * Retorna false si la pila está vacía.
+ */
 bool SymbolTableStack::insertTop(const SymbolEntry &entry) {
     if (stack.empty())
         return false;
     return stack.back()->insert(entry);
 }
 
-// Inserta un símbolo en el ámbito Global (el primero de la pila)
-// Sirve para declarar funciones o variables globales desde cualquier punto
+/**
+ * Inserta una entrada en el ámbito base (global).
+ * Retorna false si la pila está vacía.
+ */
 bool SymbolTableStack::insertBase(const SymbolEntry &entry) {
     if (stack.empty())
         return false;
     return stack.front()->insert(entry);
 }
 
-// Busca un símbolo en el ámbito más interno (el actual)
+/**
+ * Busca una entrada solo en el ámbito superior.
+ * Retorna nullptr si no existe o la pila está vacía.
+ */
 const SymbolEntry* SymbolTableStack::lookupTop(const std::string &id) {
     if (stack.empty())
         return nullptr;
     return stack.back()->lookup(id);
 }
 
-// Busca un símbolo en el ámbito Global (el primero de la pila)
+/**
+ * Busca una entrada solo en el ámbito base.
+ * Retorna nullptr si no existe o la pila está vacía.
+ */
 const SymbolEntry* SymbolTableStack::lookupBase(const std::string &id) {
     if (stack.empty())
         return nullptr;

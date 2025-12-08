@@ -18,6 +18,7 @@ struct TypeEntry {
         int numElements;
     };
 
+    // Areglo y Struct
     int baseTypeId = -1;
     SymbolTable *structFields = nullptr;
 
@@ -27,9 +28,10 @@ struct TypeEntry {
           elements(1), baseTypeId(-1), structFields(nullptr) {}
 };
 
+// Tabla de tipos
 class TypeTable {
 private:
-    std::vector<TypeEntry> types;
+    std::vector<TypeEntry> types; // Almacena los tipos
     int lastId = 0;
 
 public:
